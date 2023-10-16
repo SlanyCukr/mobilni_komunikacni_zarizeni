@@ -1,0 +1,1 @@
+# mobilni_komunikacni_zarizeni
