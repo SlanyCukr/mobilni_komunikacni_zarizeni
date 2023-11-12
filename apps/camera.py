@@ -43,8 +43,9 @@ class CameraApp(ctk.CTk):
 
     def on_close(self):
         if self.is_recording:
-            # Ensure the recording is stopped before closing
-            # Example: self.camera.stop_recording()
+        # Ensure the recording is stopped before closing
+        # Example: self.camera.stop_recording()
+            self.toggle_video_recording()
         self.camera.close()  # Close the camera
         self.destroy()
 
