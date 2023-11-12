@@ -1,0 +1,33 @@
+{
+    "1234567890": [
+        {
+            "direction": "in",
+            "message": "Hi there!",
+            "timestamp": "2023-10-28T09:30:00"
+        },
+        {
+            "direction": "out",
+            "message": "Hello Alice!",
+            "timestamp": "2023-10-28T09:31:00"
+        }
+    ],
+    "0987654321": [
+        {
+            "direction": "in",
+            "message": "Hey, are you free later?",
+            "timestamp": "2023-10-28T10:00:00"
+        },
+        {
+            "direction": "out",
+            "message": "Sure, Bob. What's up?",
+            "timestamp": "2023-10-28T10:05:00"
+        }
+    ],
+    "1122334455": [
+        {
+            "direction": "in",
+            "message": "Hello, is this a good time to chat?",
+            "timestamp": "2023-10-28T11:00:00"
+        }
+    ]
+}
