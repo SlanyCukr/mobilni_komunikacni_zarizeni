@@ -10,11 +10,18 @@ def get_battery_percentage():
     # Replace this with actual code to get battery percentage
     return random.randint(0, 100)
 
-def create_icon(battery_percentage):
-    icon_image = get_battery_icon_image(battery_percentage)
-    menu_items = menu(item(f'Battery: {battery_percentage}%', lambda: None))
-    icon = Icon("battery_icon", icon_image, menu=menu_items)
-    icon.run()
+def create_icon():
+    global icon_running
+    while icon_running:
+        battery_percentage = get_battery_percentage()
+
+        print(f"Battery percentage: {battery_percentage}")
+
+        icon_image = get_battery_icon_image(battery_percentage)
+        menu_items = (item(f'Battery: {battery_percentage}%', lambda: None),)
+        icon = Icon("battery_icon", icon_image, menu=menu_items)
+        icon.run()
+        time.sleep(1)
 
 def get_battery_icon_image(battery_percentage):
     if battery_percentage > 90:
@@ -27,15 +34,13 @@ def get_battery_icon_image(battery_percentage):
         return Image.open("../images/low-battery.png")
 
 def update_icon():
+    global icon_running
     while True:
-        battery_percentage = get_battery_percentage()
-
-        print(f"Battery percentage: {battery_percentage}")
-
-        icon.stop()
-
-        create_icon(battery_percentage)
-        time.sleep(5)  # Update every 5 seconds
+        if icon_running:
+            icon_running = False
+            time.sleep(1)  # Short delay to allow icon to stop
+        icon_running = True
+        time.sleep(5)  # Update interval
 
 window = tk.Tk()
 window.title("Battery status")
@@ -44,9 +49,14 @@ window.title("Battery status")
 battery_percentage = get_battery_percentage()
 icon = Icon("battery_icon", get_battery_icon_image(battery_percentage), menu=menu(item(f'Battery: {battery_percentage}%', lambda: None)))
 
-icon_thread = threading.Thread(target=update_icon)
-icon_thread.daemon = True  # Set as a daemon so it ends with the main program
+icon_running = True
+icon_thread = threading.Thread(target=create_icon)
+icon_thread.daemon = True
 icon_thread.start()
+
+update_thread = threading.Thread(target=update_icon)
+update_thread.daemon = True
+update_thread.start()
 
 window.withdraw()
 window.mainloop()
