@@ -2,61 +2,66 @@ import random
 import threading
 import time
 
-from pystray import MenuItem as item, Icon, Menu as menu
+from pystray import MenuItem as item
+from pystray import Menu as menu
+import pystray
 from PIL import Image
 import tkinter as tk
+
+window = tk.Tk()
+window.title("Battery status")
+
+full_battery_image = Image.open("../images/full-battery.png")
+half_battery_image = Image.open("../images/half-battery.png")
+low_battery_image = Image.open("../images/low-battery.png")
+battery_image = Image.open("../images/battery.png")
+
 
 def get_battery_percentage():
     # Replace this with actual code to get battery percentage
     return random.randint(0, 100)
 
-def create_icon():
-    global icon_running
-    while icon_running:
-        battery_percentage = get_battery_percentage()
 
-        print(f"Battery percentage: {battery_percentage}")
-
-        icon_image = get_battery_icon_image(battery_percentage)
-        menu_items = (item(f'Battery: {battery_percentage}%', lambda: None),)
-        icon = Icon("battery_icon", icon_image, menu=menu_items)
-        icon.run()
-        time.sleep(1)
-
-def get_battery_icon_image(battery_percentage):
-    if battery_percentage > 90:
-        return Image.open("../images/full-battery.png")
-    elif battery_percentage > 75:
-        return Image.open("../images/battery.png")
-    elif battery_percentage > 40:
-        return Image.open("../images/half-battery.png")
-    else:
-        return Image.open("../images/low-battery.png")
-
-def update_icon():
-    global icon_running
+def update_battery_percentage(icon):
     while True:
-        if icon_running:
-            icon_running = False
-            time.sleep(1)  # Short delay to allow icon to stop
-        icon_running = True
-        time.sleep(5)  # Update interval
 
-window = tk.Tk()
-window.title("Battery status")
+        try:
+            battery_percentage = get_battery_percentage()
 
-# Initial icon creation
-battery_percentage = get_battery_percentage()
-icon = Icon("battery_icon", get_battery_icon_image(battery_percentage), menu=menu(item(f'Battery: {battery_percentage}%', lambda: None)))
+            print(f"Battery percentage: {battery_percentage}")
 
-icon_running = True
-icon_thread = threading.Thread(target=create_icon)
-icon_thread.daemon = True
-icon_thread.start()
+            icon.menu = menu(item(f'Battery: {battery_percentage}%', lambda: None))
 
-update_thread = threading.Thread(target=update_icon)
-update_thread.daemon = True
-update_thread.start()
+            # Update icon image based on battery percentage
+            if battery_percentage > 90:
+                icon.icon = full_battery_image
+            elif battery_percentage > 75:
+                icon.icon = battery_image
+            elif battery_percentage > 40:
+                icon.icon = half_battery_image
+            else:
+                icon.icon = low_battery_image
 
-window.withdraw()
+            icon.update_menu()
+
+            time.sleep(5)  # Update every 5 second
+        except Exception as e:
+            print(e)
+
+
+def withdraw_window():
+    window.withdraw()
+    image = Image.open("../images/battery.png")
+    menu_item = item(f"Battery: {get_battery_percentage()}%", lambda: None)
+    icon = pystray.Icon("name", image, "title", menu(menu_item))
+
+    # Start a thread to update the battery percentage
+    tooltip_thread = threading.Thread(target=update_battery_percentage, args=(icon,))
+    tooltip_thread.start()
+
+    icon.run()
+
+withdraw_window()
 window.mainloop()
+
+
