@@ -16,9 +16,10 @@ def get_battery_percentage():
     return random.randint(0, 100)
 
 
-def update_battery_percentage(menu_item, icon):
+def update_battery_percentage(icon):
     battery_percentage = get_battery_percentage()
-    icon.title = f"Battery: {battery_percentage}%"
+
+    print(f"Battery percentage: {battery_percentage}")
 
     # Update icon image based on battery percentage
     if battery_percentage > 90:
@@ -30,9 +31,11 @@ def update_battery_percentage(menu_item, icon):
     else:
         icon.icon = Image.open("../images/battery_low.png")
 
+    menu = (item(f'Battery: {battery_percentage}%', lambda: None))
+    icon.menu = menu
     icon.update_menu()
 
-    time.sleep(5)  # Update every 60 seconds
+    time.sleep(5)  # Update every 5 seconds
 
 
 def withdraw_window():
@@ -43,7 +46,7 @@ def withdraw_window():
     icon = pystray.Icon("name", image, "title", menu)
 
     # Start a thread to update the battery percentage
-    tooltip_thread = threading.Thread(target=update_battery_percentage, args=(menu_item, icon))
+    tooltip_thread = threading.Thread(target=update_battery_percentage, args=(icon,))
     tooltip_thread.start()
 
     icon.run()
