@@ -30,6 +30,8 @@ def update_icon():
     while True:
         battery_percentage = get_battery_percentage()
 
+        print(f"Battery percentage: {battery_percentage}")
+
         icon.stop()
 
         create_icon(battery_percentage)
