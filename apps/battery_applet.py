@@ -40,7 +40,8 @@ window.title("Battery status")
 
 # Initial icon creation
 battery_percentage = get_battery_percentage()
-icon = Icon("battery_icon", get_battery_icon_image(battery_percentage), menu=item(f'Battery: {battery_percentage}%', lambda: None))
+icon = Icon("battery_icon", get_battery_icon_image(battery_percentage), menu=menu(item(f'Battery: {battery_percentage}%'), lambda: None))
+
 icon_thread = threading.Thread(target=update_icon)
 icon_thread.daemon = True  # Set as a daemon so it ends with the main program
 icon_thread.start()
