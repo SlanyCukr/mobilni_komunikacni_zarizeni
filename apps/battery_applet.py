@@ -24,7 +24,7 @@ def update_battery_percentage(icon):
         print(f"Battery percentage: {battery_percentage}")
 
         icon.menu = menu(item(f'Battery: {battery_percentage}%', lambda: None))
-        icon.update_menu()
+        #icon.update_menu()
 
         # Update icon image based on battery percentage
         if battery_percentage > 90:
