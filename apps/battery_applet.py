@@ -11,6 +11,10 @@ import tkinter as tk
 window = tk.Tk()
 window.title("Battery status")
 
+full_battery_image = Image.open("../images/full-battery.png")
+half_battery_image = Image.open("../images/half-battery.png")
+low_battery_image = Image.open("../images/low-battery.png")
+battery_image = Image.open("../images/battery.png")
 
 def get_battery_percentage():
     # Replace this with actual code to get battery percentage
@@ -26,17 +30,16 @@ def update_battery_percentage(icon):
             print(f"Battery percentage: {battery_percentage}")
 
             icon.menu = menu(item(f'Battery: {battery_percentage}%', lambda: None))
-            #icon.update_menu()
 
             # Update icon image based on battery percentage
             if battery_percentage > 90:
-                icon.icon = Image.open("../images/full-battery.png")
+                icon.icon = full_battery_image
             elif battery_percentage > 75:
-                icon.icon = Image.open("../images/battery.png")
+                icon.icon = battery_image
             elif battery_percentage > 40:
-                icon.icon = Image.open("../images/half-battery.png")
+                icon.icon = half_battery_image
             else:
-                icon.icon = Image.open("../images/low-battery.png")
+                icon.icon = low_battery_image
 
             icon.update_menu()
 
