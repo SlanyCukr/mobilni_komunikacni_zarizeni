@@ -1,72 +1,52 @@
-#! /usr/bin/env python
-from glob import glob
-import gtk
-import gobject
-import os
-import os.path
-from string import rstrip
-import sys
+import random
+import threading
+import time
 
-INTERVAL = 20000
-IMAGE_LOC = os.path.join(os.path.dirname(sys.argv[0]), "images/battery.png")
+from pystray import MenuItem as item
+import pystray
+from PIL import Image
+import tkinter as tk
+
+window = tk.Tk()
+window.title("Battery status")
 
 
-class BatteryTray:
-    def __init__(self):
-        self.tray = gtk.StatusIcon()
-        self.tray.connect('activate', self.refresh)
+def get_battery_percentage():
+    # Replace this with actual code to get battery percentage
+    return random.randint(0, 100)
 
-        # Create menu
-        menu = gtk.Menu()
-        i = gtk.MenuItem("About...")
-        i.show()
-        i.connect("activate", self.show_about)
-        menu.append(i)
-        i = gtk.MenuItem("Quit")
-        i.show()
-        i.connect("activate", self.quit)
-        menu.append(i)
-        self.tray.connect('popup-menu', self.show_menu, menu)
 
-        # Initalise and start battery display
-        self.refresh(None)
-        self.tray.set_visible(True)
-        gobject.timeout_add(INTERVAL, self.refresh, False)
+def update_battery_percentage(menu_item, icon):
+    battery_percentage = get_battery_percentage()
+    menu_item.text = f"Battery: {battery_percentage}%"
 
-    def show_menu(self, widget, event_button, event_time, menu):
-        menu.popup(None, None,
-            gtk.status_icon_position_menu,
-            event_button,
-            event_time,
-            self.tray
-        )
+    # Update icon image based on battery percentage
+    if battery_percentage > 75:
+        icon.icon = Image.open("battery_full.png")
+    elif battery_percentage > 40:
+        icon.icon = Image.open("battery_half.png")
+    else:
+        icon.icon = Image.open("battery_low.png")
 
-    def show_about(self, widget):
-        dialog = gtk.MessageDialog(
-            None,
-            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-            gtk.MESSAGE_INFO,
-            gtk.BUTTONS_OK,
-            """
-It's a battery meter
-By Jamie Lentin
-""")
-        dialog.run()
-        dialog.destroy()
+    icon.update_menu()
 
-    def quit(self, widget):
-        gtk.main_quit()
+    time.sleep(5)  # Update every 60 seconds
 
-    def refresh(self, widget):
-        b_level = 50
-        b_file = IMAGE_LOC
-        self.tray.set_tooltip(f"{b_level}")
-        if os.path.exists(b_file):
-            self.tray.set_from_file(b_file)
-        self.tray.set_blinking(b_level <= 5)
-        return True
 
-###############################################################################
-if __name__ == '__main__':
-    app = BatteryTray()
-    gtk.main()
+def withdraw_window():
+    window.withdraw()
+    image = Image.open("../images/battery.png")
+    menu_item = item(f"Battery: {get_battery_percentage()}%", lambda: None)
+    menu = (menu_item,)
+    icon = pystray.Icon("name", image, "title", menu)
+
+    # Start a thread to update the battery percentage
+    tooltip_thread = threading.Thread(target=update_battery_percentage, args=(menu_item, icon))
+    tooltip_thread.start()
+
+    icon.run()
+
+withdraw_window()
+window.mainloop()
+
+
