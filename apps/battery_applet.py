@@ -18,24 +18,25 @@ def get_battery_percentage():
 
 
 def update_battery_percentage(icon):
-    battery_percentage = get_battery_percentage()
+    while True:
+        battery_percentage = get_battery_percentage()
 
-    print(f"Battery percentage: {battery_percentage}")
+        print(f"Battery percentage: {battery_percentage}")
 
-    # Update icon image based on battery percentage
-    if battery_percentage > 90:
-        icon.icon = Image.open("../images/full-battery.png")
-    if battery_percentage > 75:
-        icon.icon = Image.open("../images/battery.png")
-    elif battery_percentage > 40:
-        icon.icon = Image.open("../images/half-battery.png")
-    else:
-        icon.icon = Image.open("../images/low-battery.png")
+        # Update icon image based on battery percentage
+        if battery_percentage > 90:
+            icon.icon = Image.open("../images/full-battery.png")
+        if battery_percentage > 75:
+            icon.icon = Image.open("../images/battery.png")
+        elif battery_percentage > 40:
+            icon.icon = Image.open("../images/half-battery.png")
+        else:
+            icon.icon = Image.open("../images/low-battery.png")
 
-    icon.menu = menu(item(f'Battery: {battery_percentage}%', lambda: None))
-    icon.update_menu()
+        icon.menu = menu(item(f'Battery: {battery_percentage}%', lambda: None))
+        icon.update_menu()
 
-    time.sleep(5)  # Update every 5 seconds
+        time.sleep(5)  # Update every 5 seconds
 
 
 def withdraw_window():
