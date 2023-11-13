@@ -3,6 +3,7 @@ import threading
 import time
 
 from pystray import MenuItem as item
+from pystray import Menu as menu
 import pystray
 from PIL import Image
 import tkinter as tk
@@ -31,8 +32,7 @@ def update_battery_percentage(icon):
     else:
         icon.icon = Image.open("../images/low-battery.png")
 
-    menu = (item(f'Battery: {battery_percentage}%', lambda: None))
-    icon.menu = menu
+    icon.menu = menu(item(f'Battery: {battery_percentage}%', lambda: None))
     icon.update_menu()
 
     time.sleep(5)  # Update every 5 seconds
