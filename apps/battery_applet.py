@@ -46,4 +46,5 @@ icon_thread = threading.Thread(target=update_icon)
 icon_thread.daemon = True  # Set as a daemon so it ends with the main program
 icon_thread.start()
 
+window.withdraw()
 window.mainloop()
