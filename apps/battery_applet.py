@@ -33,6 +33,7 @@ def update_battery_percentage(icon):
         else:
             icon.icon = Image.open("../images/low-battery.png")
 
+        icon.update_menu()
         icon.menu = menu(item(f'Battery: {battery_percentage}%', lambda: None))
         icon.update_menu()
 
