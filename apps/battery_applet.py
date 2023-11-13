@@ -29,8 +29,9 @@ def get_battery_icon_image(battery_percentage):
 def update_icon():
     while True:
         battery_percentage = get_battery_percentage()
-        if icon.visible:
-            icon.stop()
+
+        icon.stop()
+
         create_icon(battery_percentage)
         time.sleep(5)  # Update every 5 seconds
 
