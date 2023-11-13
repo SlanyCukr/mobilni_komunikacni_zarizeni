@@ -34,7 +34,7 @@ root = tk.Tk()
 root.withdraw()  # Hide the main window
 
 # Create a system tray icon
-img = Image.open("default_battery_icon.png")  # Replace with your default battery icon path
+img = Image.open("../images/battery.png")  # Replace with your default battery icon path
 img = img.resize((16, 16), Image.ANTIALIAS)
 icon = ImageTk.PhotoImage(img)
 
