@@ -21,12 +21,14 @@ def update_battery_percentage(menu_item, icon):
     menu_item.text = f"Battery: {battery_percentage}%"
 
     # Update icon image based on battery percentage
+    if battery_percentage > 90:
+        icon.icon = Image.open("../images/battery_full.png")
     if battery_percentage > 75:
-        icon.icon = Image.open("battery_full.png")
+        icon.icon = Image.open("../images/battery.png")
     elif battery_percentage > 40:
-        icon.icon = Image.open("battery_half.png")
+        icon.icon = Image.open("../images/battery_half.png")
     else:
-        icon.icon = Image.open("battery_low.png")
+        icon.icon = Image.open("../images/battery_low.png")
 
     icon.update_menu()
 
