@@ -13,8 +13,8 @@ class MessagingApp(ctk.CTkFrame):
         master.attributes("-zoomed", True)
         #master.state("zoomed")
 
-        self.message_data_manager = DataManager('messages.json')
-        self.contact_data_manager = DataManager('contacts.json')
+        self.message_data_manager = DataManager('../messages.json')
+        self.contact_data_manager = DataManager('../contacts.json')
 
         self.message_history = self.message_data_manager.load_data()
         self.contacts = self.contact_data_manager.load_data()

@@ -14,10 +14,10 @@ class ContactsApp(ctk.CTkFrame):
         master.attributes("-zoomed", True)
         #master.state("zoomed")
 
-        self.contact_data_manager = DataManager('contacts.json')
+        self.contact_data_manager = DataManager('../contacts.json')
         self.contacts = self.contact_data_manager.load_data()
 
-        self.call_history_data_manager = DataManager('call_history.json')
+        self.call_history_data_manager = DataManager('../call_history.json')
         self.call_history = self.call_history_data_manager.load_data()
 
         self.create_contact_listbox()
@@ -44,8 +44,7 @@ class ContactsApp(ctk.CTkFrame):
         self.call_history_text = Text(self.call_history_window, wrap="word", font=("Arial", 32))
         self.call_history_text.pack(fill="both", expand=True)
 
-        # Assuming get_call_history is a method that retrieves call history for a contact
-        call_history = self.get_call_history(contact)
+        call_history = self.call_history(contact)
         self.call_history_text.insert("end", call_history)
         self.call_history_text.configure(state="disabled")
 
