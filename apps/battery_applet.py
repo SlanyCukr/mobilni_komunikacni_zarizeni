@@ -54,7 +54,7 @@ def update_battery_percentage(icon):
 
 def withdraw_window():
     window.withdraw()
-    image = Image.open("../images/battery.png")
+    image = Image.open(os.path.join(images_directory, "battery.png"))
     menu_item = item(f"Battery: {get_battery_percentage()}%", lambda: None)
     icon = pystray.Icon("name", image, "title", menu(menu_item))
 
