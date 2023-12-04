@@ -13,10 +13,10 @@ class ContactsApp(ctk.CTkFrame):
         master.title("Contacts App")
         master.attributes("-fullscreen", True)
 
-        self.contact_data_manager = DataManager('../contacts.json')
+        self.contact_data_manager = DataManager('contacts.json')
         self.contacts = self.contact_data_manager.load_data()
 
-        self.call_history_data_manager = DataManager('../call_history.json')
+        self.call_history_data_manager = DataManager('call_history.json')
         self.call_history = self.call_history_data_manager.load_data()
 
         self.create_contact_listbox()
