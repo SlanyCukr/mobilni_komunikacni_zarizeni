@@ -1,3 +1,4 @@
+import os
 import random
 import threading
 import time
@@ -11,10 +12,12 @@ import tkinter as tk
 window = tk.Tk()
 window.title("Battery status")
 
-full_battery_image = Image.open("../images/full-battery.png")
-half_battery_image = Image.open("../images/half-battery.png")
-low_battery_image = Image.open("../images/low-battery.png")
-battery_image = Image.open("../images/battery.png")
+script_path = os.path.dirname(os.path.realpath(__file__))
+
+full_battery_image = Image.open(f"{script_path}../images/full-battery.png")
+half_battery_image = Image.open(f"{script_path}../images/half-battery.png")
+low_battery_image = Image.open(f"{script_path}../images/low-battery.png")
+battery_image = Image.open(f"{script_path}../images/battery.png")
 
 
 def get_battery_percentage():
