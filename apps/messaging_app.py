@@ -51,7 +51,7 @@ class MessagingApp(ctk.CTkFrame):
     def display_messages(self, selected_contact):
         self.new_window = Toplevel(self)
         self.new_window.title(f"Chat with {selected_contact}")
-        self.new_window.attributes("-fullscreen", False)
+        self.new_window.attributes("-zoomed", True)
 
         self.chat_area = scrolledtext.ScrolledText(self.new_window, font=("Arial", 16))
         self.chat_area.pack(fill="both", expand=True, padx=5, pady=5)

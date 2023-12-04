@@ -9,7 +9,7 @@ class CameraApp(ctk.CTk):
         super().__init__()
 
         self.title("Camera App")
-        self.attributes("-fullscreen", True)
+        self.attributes("-zoomed", True)
 
         self.camera = PiCamera()  # Initialize camera
         self.is_recording = False

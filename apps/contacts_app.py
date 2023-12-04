@@ -39,7 +39,7 @@ class ContactsApp(ctk.CTkFrame):
     def show_call_history(self, contact):
         self.call_history_window = Toplevel(self)
         self.call_history_window.title(f"Call History for {contact}")
-        self.call_history_window.attributes("-fullscreen", True)  # Make the window fullscreen
+        self.call_history_window.attributes("-zoomed", True)
 
         self.call_history_text = Text(self.call_history_window, wrap="word", font=("Arial", 32))
         self.call_history_text.pack(fill="both", expand=True)
