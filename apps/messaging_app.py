@@ -10,7 +10,7 @@ class MessagingApp(ctk.CTkFrame):
         self.pack(fill="both", expand=True)
 
         master.title("Messaging App")
-        master.attributes("-fullscreen", True)
+        master.attributes("-fullscreen", False)
 
         self.message_data_manager = DataManager('messages.json')
         self.contact_data_manager = DataManager('contacts.json')

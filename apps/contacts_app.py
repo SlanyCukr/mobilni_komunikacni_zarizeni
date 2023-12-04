@@ -11,7 +11,7 @@ class ContactsApp(ctk.CTkFrame):
         self.pack(fill="both", expand=True)
 
         master.title("Contacts App")
-        master.attributes("-fullscreen", True)
+        master.attributes("-fullscreen", False)
 
         self.contact_data_manager = DataManager('contacts.json')
         self.contacts = self.contact_data_manager.load_data()
