@@ -1,7 +1,14 @@
+#!/usr/bin/env python3
 import os
+
+os.environ['DISPLAY'] = ':0.0'
+
 import random
 import threading
 import time
+from time import sleep
+
+sleep(30)
 
 from pystray import MenuItem as item
 from pystray import Menu as menu
