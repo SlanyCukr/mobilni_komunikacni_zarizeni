@@ -10,8 +10,8 @@ class MessagingApp(ctk.CTkFrame):
         self.pack(fill="both", expand=True)
 
         master.title("Messaging App")
-        master.attributes("-fullscreen", False)
-        master.state("zoomed")
+        master.attributes("-zoomed", True)
+        #master.state("zoomed")
 
         self.message_data_manager = DataManager('messages.json')
         self.contact_data_manager = DataManager('contacts.json')
