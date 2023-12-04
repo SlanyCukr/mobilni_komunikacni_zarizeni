@@ -12,6 +12,7 @@ class ContactsApp(ctk.CTkFrame):
 
         master.title("Contacts App")
         master.attributes("-fullscreen", False)
+        master.state("zoomed")
 
         self.contact_data_manager = DataManager('contacts.json')
         self.contacts = self.contact_data_manager.load_data()

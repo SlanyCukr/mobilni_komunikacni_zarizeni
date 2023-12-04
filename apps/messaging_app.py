@@ -11,6 +11,7 @@ class MessagingApp(ctk.CTkFrame):
 
         master.title("Messaging App")
         master.attributes("-fullscreen", False)
+        master.state("zoomed")
 
         self.message_data_manager = DataManager('messages.json')
         self.contact_data_manager = DataManager('contacts.json')
@@ -50,7 +51,7 @@ class MessagingApp(ctk.CTkFrame):
     def display_messages(self, selected_contact):
         self.new_window = Toplevel(self)
         self.new_window.title(f"Chat with {selected_contact}")
-        self.new_window.attributes("-fullscreen", True)
+        self.new_window.attributes("-fullscreen", False)
 
         self.chat_area = scrolledtext.ScrolledText(self.new_window, font=("Arial", 16))
         self.chat_area.pack(fill="both", expand=True, padx=5, pady=5)
