@@ -41,16 +41,36 @@ class ContactsApp(ctk.CTkFrame):
         self.call_history_window.title(f"Call History for {contact}")
         self.call_history_window.attributes("-zoomed", True)
 
-        self.call_history_text = Text(self.call_history_window, wrap="word", font=("Arial", 32))
+        # Create a frame for the call history text
+        text_frame = ctk.CTkFrame(self.call_history_window)
+        text_frame.grid(row=0, column=0, sticky="nsew")
+
+        self.call_history_window.grid_rowconfigure(0, weight=1)
+        self.call_history_window.grid_columnconfigure(0, weight=1)
+
+        self.call_history_text = Text(text_frame, wrap="word", font=("Arial", 32))
         self.call_history_text.pack(fill="both", expand=True)
 
-        call_history = self.call_history(contact)
-        self.call_history_text.insert("end", call_history)
+        number = contact.split("(")[1][:-1]  # Extract the number from the contact string
+        call_history_records = self.call_history.get(number, [])  # Get call history for this number
+
+        for record in call_history_records:
+            direction = "Incoming" if record["direction"] == "in" else "Outgoing"
+            call_info = f"{record['timestamp']}: {direction}\n"
+            self.call_history_text.insert("end", call_info)
+
         self.call_history_text.configure(state="disabled")
 
-        self.call_button = ctk.CTkButton(self.call_history_window, text="Call", font=("Arial", 32),
+        # Create a frame for the Call button
+        button_frame = ctk.CTkFrame(self.call_history_window)
+        button_frame.grid(row=1, column=0, sticky="ew")
+
+        self.call_button = ctk.CTkButton(button_frame, text="Call", font=("Arial", 32),
                                          command=lambda: self.dial_contact(contact))
         self.call_button.pack(pady=10)
+
+        # Configure the grid layout so that the text frame expands but the button frame does not
+        self.call_history_window.grid_rowconfigure(1, weight=0)
 
     def dial_contact(self, contact):
         # Implement dialing logic here

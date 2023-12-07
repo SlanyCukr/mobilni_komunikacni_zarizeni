@@ -1,0 +1,28 @@
+{
+    "1234567890": [
+        {
+            "direction": "in",
+            "timestamp": "2023-10-28T09:30:00"
+        },
+        {
+            "direction": "out",
+            "timestamp": "2023-10-28T09:31:00"
+        }
+    ],
+    "0987654321": [
+        {
+            "direction": "in",
+            "timestamp": "2023-10-28T10:00:00"
+        },
+        {
+            "direction": "out",
+            "timestamp": "2023-10-28T10:05:00"
+        }
+    ],
+    "1122334455": [
+        {
+            "direction": "in",
+            "timestamp": "2023-10-28T11:00:00"
+        }
+    ]
+}

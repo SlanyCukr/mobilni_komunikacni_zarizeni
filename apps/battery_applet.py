@@ -16,6 +16,9 @@ import pystray
 from PIL import Image
 import tkinter as tk
 
+
+from INA219 import INA219
+
 window = tk.Tk()
 window.title("Battery status")
 
@@ -26,11 +29,17 @@ half_battery_image = Image.open(os.path.join(images_directory, "half-battery.png
 low_battery_image = Image.open(os.path.join(images_directory, "low-battery.png"))
 battery_image = Image.open(os.path.join(images_directory, "battery.png"))
 
+ina219 = INA219(addr=0x42)
+
 
 def get_battery_percentage():
-    # Replace this with actual code to get battery percentage
-    return random.randint(0, 100)
 
+    bus_voltage = ina219.getBusVoltage_V()  # voltage on V- (load side)
+    percent = (bus_voltage - 6) / 2.4 * 100
+    if (percent > 100): percent = 100
+    if (percent < 0): percent = 0
+
+    return percent
 
 def update_battery_percentage(icon):
     while True:
