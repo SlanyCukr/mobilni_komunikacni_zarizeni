@@ -1,5 +1,8 @@
+from datetime import datetime
+
 import customtkinter as ctk
-from tkinter import Toplevel, scrolledtext, Entry, Button
+from tkinter import Toplevel, scrolledtext, Entry, Button, END
+
 from CTkListbox import CTkListbox
 from common.data_manager import DataManager
 
@@ -46,9 +49,35 @@ class MessagingApp(ctk.CTkFrame):
         if selection_index == ():
             return
         selected_contact = self.contact_message_listbox.get(selection_index)
-        self.display_messages(selected_contact)
+        self.display_message_window(selected_contact)
 
-    def display_messages(self, selected_contact):
+    def display_message(self, selected_contact) -> int:
+        """
+        Display message history for selected contact
+        :param selected_contact: Contact name
+        :return: Contact number
+        """
+        self.chat_area.delete('1.0', 'end')
+
+        # find contact number in contacts one liner
+        try:
+            contact_number = next(contact['number'] for contact in self.contacts if contact['name'] == selected_contact)
+        except StopIteration:
+            contact_number = selected_contact
+        messages = self.message_history.get(selected_contact,
+                                            []) if selected_contact in self.contacts else self.message_history.get(
+            contact_number, [])
+
+        for message in messages:
+            direction = message['direction']
+            text = message['message']
+            timestamp = message['timestamp']
+            formatted_message = f"{timestamp} - {direction}: {text}\n"
+            self.chat_area.insert("end", formatted_message)
+
+        return contact_number
+
+    def display_message_window(self, selected_contact):
         self.new_window = Toplevel(self)
         self.new_window.title(f"Chat with {selected_contact}")
         self.new_window.attributes("-zoomed", True)
@@ -59,29 +88,30 @@ class MessagingApp(ctk.CTkFrame):
         self.message_entry = Entry(self.new_window, font=("Arial", 16))
         self.message_entry.pack(fill="x", expand=False, padx=5, pady=5)
 
-        self.send_button = Button(self.new_window, text="Send", font=("Arial", 16), command=self.send_message)
+        contact_number = self.display_message(selected_contact)
+
+        self.send_button = Button(self.new_window, text="Send", font=("Arial", 16), command=lambda: self.send_message(contact_number, selected_contact))
         self.send_button.pack(padx=5, pady=5)
 
         self.back_button = Button(self.new_window, text="Back", font=("Arial", 16), command=self.new_window.destroy)
         self.back_button.pack(padx=5, pady=5)
 
-        # find contact number in contacts one liner
-        try:
-            contact_number = next(contact['number'] for contact in self.contacts if contact['name'] == selected_contact)
-        except StopIteration:
-            contact_number = selected_contact
-        messages = self.message_history.get(selected_contact, []) if selected_contact in self.contacts else self.message_history.get(contact_number, [])
+    def send_message(self, contact_number: int, selected_contact: str):
+        text_to_send = self.message_entry.get()
 
-        for message in messages:
-            direction = message['direction']
-            text = message['message']
-            timestamp = message['timestamp']
-            formatted_message = f"{timestamp} - {direction}: {text}\n"
-            self.chat_area.insert("end", formatted_message)
+        print(f"Sending text {text_to_send} to {contact_number}.")
 
-    def send_message(self):
         # Implement sending message logic
-        pass
+
+        self.message_history[contact_number].append({
+            'direction': 'out',
+            'message': text_to_send,
+            'timestamp': datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),  # timestamp in the form 2023-10-28T11:00:00
+        })
+
+        self.message_data_manager.save_data(self.message_history)
+
+        self.display_message(selected_contact)
 
 
 if __name__ == "__main__":

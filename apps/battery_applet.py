@@ -32,14 +32,16 @@ battery_image = Image.open(os.path.join(images_directory, "battery.png"))
 ina219 = INA219(addr=0x42)
 
 
-def get_battery_percentage():
+def get_battery_percentage() -> float:
 
     bus_voltage = ina219.getBusVoltage_V()  # voltage on V- (load side)
     percent = (bus_voltage - 6) / 2.4 * 100
     if (percent > 100): percent = 100
     if (percent < 0): percent = 0
 
-    return percent
+    # return percent with one decimal place
+    return round(percent, 1)
+
 
 def update_battery_percentage(icon):
     while True:
