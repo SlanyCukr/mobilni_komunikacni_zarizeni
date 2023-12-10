@@ -7,6 +7,7 @@ import time
 SERIAL_PORT = '/dev/ttyUSB2'  # Update this based on your setup
 BAUD_RATE = 115200
 
+
 # Initialize serial communication with the SIM8202G-M2 module
 def init_serial():
     try:
@@ -15,6 +16,7 @@ def init_serial():
     except Exception as e:
         messagebox.showerror("Serial Connection Error", str(e))
         return None
+
 
 # Function to send AT commands and read responses
 def send_at_command(ser, command):
@@ -27,6 +29,7 @@ def send_at_command(ser, command):
         messagebox.showerror("AT Command Error", str(e))
         return None
 
+
 # Function to send an SMS
 def send_sms(phone_number: int, message: str):
     send_at_command(ser, 'AT+CMGF=1')  # Set SMS text mode
@@ -34,12 +37,14 @@ def send_sms(phone_number: int, message: str):
     send_at_command(ser, message + chr(26))  # Message followed by CTRL+Z
     messagebox.showinfo("SMS Sent", "SMS sent successfully!")
 
+
 # Function to read SMS
 def read_sms():
     send_at_command(ser, 'AT+CMGF=1')  # Set SMS text mode
     messages = send_at_command(ser, 'AT+CMGL="ALL"')  # List all SMS
     sms_display.delete(1.0, tk.END)
     sms_display.insert(tk.END, messages)
+
 
 # GUI setup
 def setup_gui(root, ser):
