@@ -5,7 +5,7 @@ from CTkListbox import CTkListbox
 
 from common.data_manager import DataManager
 
-from sms import send_sms
+from apps.sms import send_sms
 
 
 class MessagingApp(ctk.CTkFrame):
