@@ -35,7 +35,6 @@ def send_sms(phone_number: int, message: str):
     send_at_command(ser, 'AT+CMGF=1')  # Set SMS text mode
     send_at_command(ser, f'AT+CMGS="{phone_number}"')
     send_at_command(ser, message + chr(26))  # Message followed by CTRL+Z
-    messagebox.showinfo("SMS Sent", "SMS sent successfully!")
 
 
 # Function to read SMS
