@@ -1,3 +1,5 @@
+import threading
+import time
 from datetime import datetime
 import customtkinter as ctk
 from tkinter import Toplevel, scrolledtext, Entry, Button, simpledialog
@@ -5,7 +7,7 @@ from CTkListbox import CTkListbox
 
 from common.data_manager import DataManager
 
-from apps.sms import send_sms
+from apps.sms import send_sms, read_sms
 
 
 class MessagingApp(ctk.CTkFrame):
@@ -24,6 +26,41 @@ class MessagingApp(ctk.CTkFrame):
         self.contacts = self.contact_data_manager.load_data()
 
         self.create_contact_message_listbox()
+
+    def start_sms_reader_thread(self):
+        self.stop_thread = False
+        self.sms_thread = threading.Thread(target=self.sms_reader)
+        self.sms_thread.start()
+
+    def sms_reader(self):
+        while not self.stop_thread:
+            received_messages = read_sms()
+
+            print(received_messages)
+
+            """if contact_number not in self.message_history:
+                self.message_history[contact_number] = []
+
+            self.message_history[contact_number].append({
+                'direction': 'out',
+                'message': text_to_send,
+                'timestamp': datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),  # timestamp in the form 2023-10-28T11:00:00
+            })
+
+            self.message_data_manager.save_data(self.message_history)
+
+            # update message window
+            self.display_message(selected_contact)
+
+            # update main contact listbox
+            self.show_contacts()
+        
+            time.sleep(5)  # Check for new messages every 5 seconds"""
+
+    def on_closing(self):
+        self.stop_thread = True
+        self.sms_thread.join()
+        self.master.destroy()
 
     def open_new_message_window(self):
         # Ask for the contact number to which the user wants to send a message
@@ -153,4 +190,5 @@ class MessagingApp(ctk.CTkFrame):
 if __name__ == "__main__":
     root = ctk.CTk()
     app = MessagingApp(master=root)
+    root.protocol("WM_DELETE_WINDOW", app.on_closing)
     app.mainloop()

@@ -41,8 +41,8 @@ def send_sms(phone_number: int, message: str):
 def read_sms():
     send_at_command(ser, 'AT+CMGF=1')  # Set SMS text mode
     messages = send_at_command(ser, 'AT+CMGL="ALL"')  # List all SMS
-    sms_display.delete(1.0, tk.END)
-    sms_display.insert(tk.END, messages)
+
+    return messages
 
 
 # GUI setup
