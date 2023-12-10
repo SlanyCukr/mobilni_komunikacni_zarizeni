@@ -27,6 +27,9 @@ class MessagingApp(ctk.CTkFrame):
 
         self.create_contact_message_listbox()
 
+        # Start a thread to read SMS messages
+        self.start_sms_reader_thread()
+
     def start_sms_reader_thread(self):
         self.stop_thread = False
         self.sms_thread = threading.Thread(target=self.sms_reader)
